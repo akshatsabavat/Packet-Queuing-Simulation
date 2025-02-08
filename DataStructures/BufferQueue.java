@@ -1,3 +1,5 @@
+package DataStructures;
+
 import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.Queue;

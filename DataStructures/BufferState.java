@@ -1,4 +1,6 @@
+package DataStructures;
 // A class defining the state of the buffer that indicates how many packets we have dropped and how many packets that currently reside in the buffer
+
 // Denoted by S(Q,D) | Q --> number of pkts in queue, D --> number of pkts dropped from queue
 
 import java.text.MessageFormat;

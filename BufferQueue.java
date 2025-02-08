@@ -26,18 +26,33 @@ public class BufferQueue {
     }
 
     // method to push pkts to Buffer
-    public void PushPktToBuffer(Packet pkt, BufferState SQ) {
+    public void EnqueuePktToBuffer(Packet pkt, BufferState SQ) {
         // first we verify if the Buffer currently has space within it to accomadate the
         // queue, if not we increment the pktsDropped number in the state
         if (pktBufferQueue.size() < pktBufferQueueSize) {
-            pktBufferQueue.add(pkt);
-            SQ.pktsInQueue += 1;
+            pktBufferQueue.offer(pkt);
+            // incrementing the number of packets in queue
+            SQ.updateState(true, true);
             String outputMsg = MessageFormat.format("packet : {0} is now in queue", pkt.pktNumber);
             System.out.println(outputMsg);
         } else {
-            SQ.pktsDropped--;
+            // incrementing the number of packets dropped in state
+            SQ.updateState(true, false);
             String outputMsg = MessageFormat.format("packet : {0} has been dropped, queue full {1}", pkt.pktNumber,
                     SQ.pktsInQueue);
+            System.out.println(outputMsg);
+        }
+    }
+
+    // method to push pkts out of the buffer
+    public void DequeuePktFromBuffer() {
+        // we get the pkt that sits at the front of the queue waiting to be dequeued
+        Packet pktOutFront = pktBufferQueue.poll();
+        if (pktOutFront != null) {
+            Packet removedPkt = pktBufferQueue.remove();
+            // update the BufferStateAccordingly
+
+            String outputMsg = MessageFormat.format("packet {0}, has been removed from queue", removedPkt.pktNumber);
             System.out.println(outputMsg);
         }
     }

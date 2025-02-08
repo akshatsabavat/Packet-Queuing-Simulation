@@ -45,13 +45,13 @@ public class BufferQueue {
     }
 
     // method to push pkts out of the buffer
-    public void DequeuePktFromBuffer() {
+    public void DequeuePktFromBuffer(BufferState SQ) {
         // we get the pkt that sits at the front of the queue waiting to be dequeued
         Packet pktOutFront = pktBufferQueue.poll();
         if (pktOutFront != null) {
             Packet removedPkt = pktBufferQueue.remove();
             // update the BufferStateAccordingly
-
+            SQ.updateState(false, true);
             String outputMsg = MessageFormat.format("packet {0}, has been removed from queue", removedPkt.pktNumber);
             System.out.println(outputMsg);
         }

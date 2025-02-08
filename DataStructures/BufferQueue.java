@@ -4,18 +4,6 @@ import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.Queue;
 
-// A class defining the data structure for a packet
-class Packet {
-    int pktNumber;
-
-    // consturtor method for creating a pkt we will be just using a number to
-    // identify the pkt, No additional property like packet size was added, cause
-    // then the state would vary
-    public Packet(int pktNumber) {
-        this.pktNumber = pktNumber;
-    }
-}
-
 // A class defining the buffer queue and all it's related operations
 public class BufferQueue {
     private Queue<Packet> pktBufferQueue;
@@ -49,9 +37,8 @@ public class BufferQueue {
     // method to push pkts out of the buffer
     public void DequeuePktFromBuffer(BufferState SQ) {
         // we get the pkt that sits at the front of the queue waiting to be dequeued
-        Packet pktOutFront = pktBufferQueue.poll();
-        if (pktOutFront != null) {
-            Packet removedPkt = pktBufferQueue.remove();
+        Packet removedPkt = pktBufferQueue.poll();
+        if (removedPkt != null) {
             // update the BufferStateAccordingly
             SQ.updateState(false, true);
             String outputMsg = MessageFormat.format("packet {0}, has been removed from queue", removedPkt.pktNumber);

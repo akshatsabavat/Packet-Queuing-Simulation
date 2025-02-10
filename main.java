@@ -1,6 +1,7 @@
 import java.text.MessageFormat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import DataStructures.BufferQueue;
 import DataStructures.BufferState;
@@ -72,6 +73,15 @@ public class main {
                 }
             }
         }
+        executor.shutdown(); // Shutdown the executor
+        try {
+            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS); // Wait for all tasks to complete
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
+        System.out.println("All simulations completed.");
+        // we print out the the entire object to see for ourselves
+        simulation_results.printAllResults();
     }
 }

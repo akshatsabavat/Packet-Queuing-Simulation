@@ -25,6 +25,23 @@ public class SimulationResults {
             this.n = n;
             this.eventData = simulationRuns;
         }
+
+        // some getter functions for retriving the attributes
+        private int getEnvironmentLambda() {
+            return lambda;
+        }
+
+        private int getEnvironmentMu() {
+            return mu;
+        }
+
+        private int getEnvironmentN() {
+            return n;
+        }
+
+        private ArrayList<SimulationInstance> getEnvironmentSimulationRuns() {
+            return eventData;
+        }
     }
 
     // Now after finally declaring the above to private classes we can declare the
@@ -60,5 +77,25 @@ public class SimulationResults {
     // environments and how they performed
     public Map<String, SimulationEnvironment> getSimulationResults() {
         return simulationResults;
+    }
+
+    // Method the view all the results we got once all 27 runs have been completed
+    public void printAllResults() {
+        System.out.println("--- All Simulation Results ---");
+        for (Map.Entry<String, SimulationEnvironment> entry : simulationResults.entrySet()) {
+            String simulationId = entry.getKey();
+            SimulationEnvironment environment = entry.getValue();
+
+            System.out.println("\n--- " + simulationId + " ---");
+            System.out
+                    .println("Lambda: " + environment.getEnvironmentLambda() + ", Mu: " + environment.getEnvironmentMu()
+                            + ", N: " + environment.getEnvironmentN());
+
+            for (SimulationInstance instance : environment.getEnvironmentSimulationRuns()) {
+                System.out.println(
+                        "Event " + instance.getEventId() + ": Packets in queue = " + instance.getPktsInQueue() +
+                                ", Packets dropped = " + instance.getPktsDropped());
+            }
+        }
     }
 }

@@ -23,6 +23,7 @@ public class NetworkSimulation {
         this.events = events;
         this.lambda = lambda;
         this.mu = mu;
+        this.simulationRuns = new ArrayList<>();
     }
 
     public void RunSimulation(BufferQueue PktQueue, BufferState SQ) {

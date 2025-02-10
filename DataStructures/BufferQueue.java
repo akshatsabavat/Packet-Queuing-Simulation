@@ -23,14 +23,9 @@ public class BufferQueue {
             pktBufferQueue.offer(pkt);
             // incrementing the number of packets in queue
             SQ.updateState(true, true);
-            String outputMsg = MessageFormat.format("packet : {0} is now in queue", pkt.pktNumber);
-            System.out.println(outputMsg);
         } else {
             // incrementing the number of packets dropped in state
             SQ.updateState(true, false);
-            String outputMsg = MessageFormat.format("packet : {0} has been dropped, queue full {1}", pkt.pktNumber,
-                    SQ.pktsInQueue);
-            System.out.println(outputMsg);
         }
     }
 
@@ -41,8 +36,6 @@ public class BufferQueue {
         if (removedPkt != null) {
             // update the BufferStateAccordingly
             SQ.updateState(false, true);
-            String outputMsg = MessageFormat.format("packet {0}, has been removed from queue", removedPkt.pktNumber);
-            System.out.println(outputMsg);
         }
     }
 }

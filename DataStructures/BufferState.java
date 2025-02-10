@@ -30,8 +30,5 @@ public class BufferState {
             // Increment pktsDropped
             this.pktsDropped++;
         }
-
-        String outputMsg = MessageFormat.format("Current State - S({0},{1})", pktsInQueue, pktsDropped);
-        System.out.println(outputMsg);
     }
 }

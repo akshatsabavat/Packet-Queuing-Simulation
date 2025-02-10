@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -83,5 +84,12 @@ public class main {
         System.out.println("All simulations completed.");
         // we print out the the entire object to see for ourselves
         simulation_results.printAllResults();
+
+        try {
+            simulation_results.dumpResultsToFile("simulation_results.txt"); // Dump to file
+            System.out.println("Simulation results dumped to simulation_results.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

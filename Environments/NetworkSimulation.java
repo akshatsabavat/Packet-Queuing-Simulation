@@ -37,7 +37,6 @@ public class NetworkSimulation {
             double y = random.nextDouble(); // random number b/w 0.0 & 1.0
             if (y < Pa) {
                 // this triggers an arrival event so hence, the pkt enters
-                System.out.println(y + Pa);
                 Packet pkt = new Packet(i);
                 PktQueue.EnqueuePktToBuffer(pkt, SQ);
             } else {

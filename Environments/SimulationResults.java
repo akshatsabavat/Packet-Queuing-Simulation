@@ -4,35 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import DataStructures.SimulationInstance;
+
 // Class to facilitate all my simulation runs for static and dynamic cases
 public class SimulationResults {
-
-    // This is one instance of a simulation that will be coupled up in an array
-    private class SimulationInstance {
-        private int eventId;
-        private int pktsInQueue;
-        private int pktsDropped;
-
-        // Constructor to intialize that Simulation Instance
-        private SimulationInstance(int eventId, int pktsInQueue, int pktsDropped) {
-            this.eventId = eventId;
-            this.pktsInQueue = pktsInQueue;
-            this.pktsDropped = pktsDropped;
-        }
-
-        // Getters for accessing attributes
-        public int getEventId() {
-            return eventId;
-        }
-
-        public int getPktsInQueue() {
-            return pktsInQueue;
-        }
-
-        public int getPktsDropped() {
-            return pktsDropped;
-        }
-    }
 
     // This is an instace that defines the details of the entire simulation
     // environment and it contains all the instance of simulation that we will use
@@ -44,11 +19,11 @@ public class SimulationResults {
         private ArrayList<SimulationInstance> eventData;
 
         // Constructor to initialize an instance of a simulation environment
-        private SimulationEnvironment(int lambda, int mu, int n) {
+        private SimulationEnvironment(int lambda, int mu, int n, ArrayList<SimulationInstance> simulationRuns) {
             this.lambda = lambda;
             this.mu = mu;
             this.n = n;
-            this.eventData = new ArrayList<>();
+            this.eventData = simulationRuns;
         }
     }
 
@@ -68,8 +43,11 @@ public class SimulationResults {
     }
 
     // adding an environment to the Simulation Results, once it has been completed
-    public void addEnvironment(String simulationId, SimulationEnvironment environment) {
-        simulationResults.put(simulationId, environment);
+    public void addEnvironment(String simulationId, NetworkSimulation simulation, int n) {
+        // defining the environment
+        SimulationEnvironment simulationEnvironment = new SimulationEnvironment(simulation.getSimulationLambda(),
+                simulation.getSimulationMu(), n, simulation.getSimulationRuns());
+        simulationResults.put(simulationId, simulationEnvironment);
     }
 
     // if we wanna access and get the run time results of an environment, we use the

@@ -1,15 +1,22 @@
 package Environments;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import DataStructures.BufferQueue;
 import DataStructures.BufferState;
 import DataStructures.Packet;
+import DataStructures.SimulationInstance;
 
 public class NetworkSimulation {
     private int lambda;
     private int mu;
     private int events;
+
+    // I am pretty much instantiating this here as we will need this so we can
+    // define it here and define a getter function to then store it in our final
+    // results
+    private ArrayList<SimulationInstance> simulationRuns;
 
     // Constructor to define a simulation instance
     public NetworkSimulation(int lambda, int mu, int events) {
@@ -36,7 +43,24 @@ public class NetworkSimulation {
                 // this triggers a departure event
                 PktQueue.DequeuePktFromBuffer(SQ);
             }
+            // once a run is completed, we will define that instance and store it in our
+            // simulation runs ArrayList
+            SimulationInstance simulationInstance = new SimulationInstance(i, SQ.pktsInQueue, SQ.pktsDropped);
+            simulationRuns.add(simulationInstance);
         }
     }
 
+    // getter function to get all our simulation runs for the respective environment
+    public ArrayList<SimulationInstance> getSimulationRuns() {
+        return simulationRuns;
+    }
+
+    // Other getter functions for environment attributes
+    public int getSimulationLambda() {
+        return lambda;
+    }
+
+    public int getSimulationMu() {
+        return mu;
+    }
 }

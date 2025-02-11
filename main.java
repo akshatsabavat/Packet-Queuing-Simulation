@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import DataStructures.BufferQueue;
 import DataStructures.BufferState;
+import DataStructures.VariableLambdaScheduleEntries;
 import Environments.NetworkSimulation;
 import Environments.SimulationResults;
 
@@ -91,5 +92,26 @@ public class main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Simulating the variable environment
+        int n = 100;
+        int mu = 120;
+        int totalEvents = 1000000;
+
+        // we now define our variable lambda schedule entries list, and add enties to it
+        VariableLambdaScheduleEntries scheduleEntries = new VariableLambdaScheduleEntries();
+        scheduleEntries.AddToScheduleEntries(0.10, 70);
+        scheduleEntries.AddToScheduleEntries(0.70, 200);
+        scheduleEntries.AddToScheduleEntries(0.80, 130);
+        scheduleEntries.AddToScheduleEntries(0.90, 120);
+        scheduleEntries.AddToScheduleEntries(1, 70);
+
+        // we redefine a new buffer instance and a state instace to record the above
+        // observations
+        BufferState SQ = new BufferState(0, 0);
+        BufferQueue PktQueue = new BufferQueue(n);
+
+        // we now create a new simulation to run this variable enviroment
+
     }
 }

@@ -152,6 +152,8 @@ public class SimulationResults {
     // Method to dump my results of all 27 combinations into 27 different files
     // stored in a simulation_results folder, or any directory name provided at main
 
+    // These files will all be CSV for ease of loading
+
     public void dumpSimulationResults(String directory) throws IOException {
         // we first create the folder, if it doesn't exist in the directory
 
@@ -178,17 +180,22 @@ public class SimulationResults {
 
             // now for each entry we define a file, using file name like -
             // lambda50_mu30_n100, whuch already comes in from the simulation id
-            String fileName = directory + "/" + simulationId + ".txt";
+            String fileName = directory + "/" + simulationId + ".csv";
 
             System.out.println(String.format("Creating Simulation File --> %s", fileName));
             try (FileWriter fileWriter = new FileWriter(fileName)) {
                 // now capture all the simulation data for the environment and write it to the
                 // designated file
+
+                // we define a header row to store all CSV data accordingly
+                fileWriter.write("Event ID, Packets in Queue, Packets Dropped\n");
                 ArrayList<SimulationInstance> environmentSimulationData = environment.getEnvironmentSimulationRuns();
 
                 // now we format and write each of those simulation instances/states to the file
                 for (SimulationInstance instance : environmentSimulationData) {
-                    fileWriter.write(String.format("%d %d %d", instance.eventId, instance.pktsInQueue,
+                    // we write it into the file following the format created for the header
+                    // mentioned above
+                    fileWriter.write(String.format("%d,%d,%d\n", instance.eventId, instance.pktsInQueue,
                             instance.pktsDropped));
                 }
             }

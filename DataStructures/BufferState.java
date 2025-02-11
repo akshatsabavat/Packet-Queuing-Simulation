@@ -3,8 +3,6 @@ package DataStructures;
 
 // Denoted by S(Q,D) | Q --> number of pkts in queue, D --> number of pkts dropped from queue
 
-import java.text.MessageFormat;
-
 public class BufferState {
     public int pktsInQueue;
     public int pktsDropped;

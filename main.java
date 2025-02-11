@@ -86,8 +86,8 @@ public class main {
         simulation_results.printAllResults();
 
         try {
-            simulation_results.dumpResultsToFile("simulation_results.txt"); // Dump to file
-            System.out.println("Simulation results dumped to simulation_results.txt");
+            simulation_results.dumpSimulationResults("simulation_results");
+            System.out.println("Simulation results dumped to simulation_results folder");
         } catch (IOException e) {
             e.printStackTrace();
         }

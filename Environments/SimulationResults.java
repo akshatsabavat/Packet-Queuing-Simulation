@@ -1,5 +1,6 @@
 package Environments;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -148,49 +149,49 @@ public class SimulationResults {
         }
     }
 
-    public void dumpResultsToFile(String filename) throws IOException {
-        try (FileWriter writer = new FileWriter(filename)) {
-            writer.write("simulation_results = {\n");
+    // Method to dump my results of all 27 combinations into 27 different files
+    // stored in a simulation_results folder, or any directory name provided at main
 
-            for (Map.Entry<String, SimulationEnvironment> entry : simulationResults.entrySet()) {
-                String simulationId = entry.getKey();
-                SimulationEnvironment environment = entry.getValue();
+    public void dumpSimulationResults(String directory) throws IOException {
+        // we first create the folder, if it doesn't exist in the directory
 
-                writer.write("    \"" + simulationId + "\": {\n");
-                writer.write("        \"event_ids\": [");
+        File dir = new File(directory);
 
-                List<SimulationInstance> eventData = environment.getEnvironmentSimulationRuns();
+        // Get the parent directory
+        File parentDir = dir.getParentFile();
 
-                for (int i = 0; i < eventData.size(); i++) {
-                    writer.write(String.valueOf(eventData.get(i).getEventId()));
-                    if (i < eventData.size() - 1) {
-                        writer.write(", ");
-                    }
-                }
-                writer.write("],\n");
-
-                writer.write("        \"packets_in_queue\": [");
-                for (int i = 0; i < eventData.size(); i++) {
-                    writer.write(String.valueOf(eventData.get(i).getPktsInQueue()));
-                    if (i < eventData.size() - 1) {
-                        writer.write(", ");
-                    }
-                }
-                writer.write("],\n");
-
-                writer.write("        \"packets_dropped\": [");
-                for (int i = 0; i < eventData.size(); i++) {
-                    writer.write(String.valueOf(eventData.get(i).getPktsDropped()));
-                    if (i < eventData.size() - 1) {
-                        writer.write(", ");
-                    }
-                }
-                writer.write("]\n");
-
-                writer.write("    },\n"); // End of this simulation's data
+        if (parentDir != null && !parentDir.exists()) { // Check if there's a parent dir and it doesn't exist.
+            if (!parentDir.mkdirs()) { // Create parent directory
+                throw new IOException("Failed to create parent directory: " + parentDir.getAbsolutePath());
             }
+        }
 
-            writer.write("}\n"); // End of the entire simulation_results dictionary
+        if (!dir.exists()) { // Now create the target directory.
+            if (!dir.mkdirs()) {
+                throw new IOException("Failed to create directory: " + dir.getAbsolutePath());
+            }
+        }
+
+        for (Map.Entry<String, SimulationEnvironment> entry : simulationResults.entrySet()) {
+            String simulationId = entry.getKey();
+            SimulationEnvironment environment = entry.getValue();
+
+            // now for each entry we define a file, using file name like -
+            // lambda50_mu30_n100, whuch already comes in from the simulation id
+            String fileName = directory + "/" + simulationId + ".txt";
+
+            System.out.println(String.format("Creating Simulation File --> %s", fileName));
+            try (FileWriter fileWriter = new FileWriter(fileName)) {
+                // now capture all the simulation data for the environment and write it to the
+                // designated file
+                ArrayList<SimulationInstance> environmentSimulationData = environment.getEnvironmentSimulationRuns();
+
+                // now we format and write each of those simulation instances/states to the file
+                for (SimulationInstance instance : environmentSimulationData) {
+                    fileWriter.write(String.format("%d %d %d", instance.eventId, instance.pktsInQueue,
+                            instance.pktsDropped));
+                }
+            }
         }
     }
 }

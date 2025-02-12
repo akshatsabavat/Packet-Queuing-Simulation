@@ -7,6 +7,7 @@ import DataStructures.BufferQueue;
 import DataStructures.BufferState;
 import DataStructures.Packet;
 import DataStructures.SimulationInstance;
+import DataStructures.VariableLambdaScheduleEntries;
 
 public class NetworkSimulation {
     private int lambda;
@@ -26,6 +27,7 @@ public class NetworkSimulation {
         this.simulationRuns = new ArrayList<>();
     }
 
+    // Method to run a simulation for fixed values
     public void RunSimulation(BufferQueue PktQueue, BufferState SQ) {
         // for event generation
         Random random = new Random();
@@ -45,6 +47,31 @@ public class NetworkSimulation {
             }
             // once a run is completed, we will define that instance and store it in our
             // simulation runs ArrayList
+            SimulationInstance simulationInstance = new SimulationInstance(i, SQ.pktsInQueue, SQ.pktsDropped);
+            simulationRuns.add(simulationInstance);
+        }
+    }
+
+    // Method to run a simulation for variable lambda values
+    public void RunVariableInputRateSimulation(BufferQueue PktQueue, BufferState SQ,
+            VariableLambdaScheduleEntries scheduleEntries) {
+        // the only fundamental difference here would be that we are now calculating the
+        // Pa at each event as lambda is now coming in at a variable rate that depends
+        // upon the completion of events
+        Random random = new Random();
+
+        for (int i = 0; i < events; i++) {
+            // invoke the method to get the LambdaValues based on the scheule enties
+            int variable_lambda = scheduleEntries.getLambda(i, events);
+            double Pa = (double) variable_lambda / (mu + variable_lambda);
+            double y = random.nextDouble();
+            if (y < Pa) {
+                Packet pkt = new Packet(i);
+                PktQueue.EnqueuePktToBuffer(pkt, SQ);
+            } else {
+                PktQueue.DequeuePktFromBuffer(SQ);
+            }
+
             SimulationInstance simulationInstance = new SimulationInstance(i, SQ.pktsInQueue, SQ.pktsDropped);
             simulationRuns.add(simulationInstance);
         }

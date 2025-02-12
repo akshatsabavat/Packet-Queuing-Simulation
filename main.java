@@ -112,6 +112,23 @@ public class main {
         BufferQueue PktQueue = new BufferQueue(n);
 
         // we now create a new simulation to run this variable enviroment
+        // I pass 70 to lambda, as it starts and ends with 70 even in the table
+        NetworkSimulation variableSimulation = new NetworkSimulation(70, mu, totalEvents);
 
+        // Now run the variable simulation
+        System.out.println("Running Simulation instance for variable input rates");
+        variableSimulation.RunVariableInputRateSimulation(PktQueue, SQ, scheduleEntries);
+
+        // now we difine a new results instance to dump the data and store our run
+        // values
+        SimulationResults variableSimulationResults = new SimulationResults();
+        variableSimulationResults.addEnvironment("variable_lambda_input_rate",
+                variableSimulation,
+                n);
+        try {
+            variableSimulationResults.dumpSimulationResults("var_sim_results");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
